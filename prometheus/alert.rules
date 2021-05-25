@@ -51,7 +51,7 @@ groups:
       description: "Mailserver container is down for more than 30 seconds."
 
   - alert: mailserver_high_cpu
-    expr: sum(rate(container_cpu_usage_seconds_total{image="tvial/docker-mailserver:latest"}[1m])) / count(node_cpu_seconds_total{mode="system"}) * 100 > 10
+    expr: sum(rate(container_cpu_usage_seconds_total{image="tvial/docker-mailserver:latest"}[1m])) / count(node_cpu_seconds_total{mode="system"}) * 100 > 25
     for: 30s
     labels:
       severity: warning
