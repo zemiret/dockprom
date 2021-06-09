@@ -3,6 +3,9 @@ version: '2.1'
 networks:
   monitor-net:
     driver: bridge
+  proxy-tier:
+    external:
+      name: nginx-proxy
 
 volumes:
     prometheus_data: {}
@@ -95,11 +98,16 @@ services:
       - GF_SECURITY_ADMIN_USER=${ADMIN_USER}
       - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD}
       - GF_USERS_ALLOW_SIGN_UP=false
+      - VIRTUAL_HOST=${GRAFANA_VIRTUAL_HOST}
+      - VIRTUAL_PORT=${GRAFANA_VIRTUAL_PORT}
+      - LETSENCRYPT_HOST=${GRAFANA_LETSENCRYPT_HOST}
+      - LETSENCRYPT_EMAIL=${GRAFANA_LETSENCRYPT_EMAIL}
     restart: unless-stopped
     expose:
       - 3000
     networks:
       - monitor-net
+      - proxy-tier
     labels:
       org.label-schema.group: "monitoring"
 
